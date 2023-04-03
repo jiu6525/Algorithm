@@ -1,0 +1,119 @@
+class ArrayStack: #스택 기본 틀
+    def __init__(self):
+        self.data = [] #데이터를 저장할 data리스트 생성
+
+    def size(self):
+        return len(self.data) #스택의 크기를 리턴
+    
+    def isEmpty(self):
+        return self.size()==0   #스택이 비어있는지 부울값 리턴
+
+    def push(self,item):
+        self.data.append(item)  #스택에 데이터 추가
+
+    def pop(self):
+        return self.data.pop()  #스택에 마지막 원소 추출
+
+    def peek(self):
+        return self.data[-1]    #스택에 마지막 원소값 확인
+
+
+def splitTokens(arr): # 중위 표현식을 피연산자와 연산자로 분리
+    tokens = [] #결과값을 담을 리스트 생성
+    val = 0
+    valprocessing = False
+
+    for i in arr:
+        if i == ' ':
+            continue
+        if i in '0123456789':
+            val = val * 10 + int(i) #ex'1','2','3' ->123으로 변환
+            valprocessing = True
+        else:
+            if valprocessing:   #만약 앞에 숫자가 있을경우
+                tokens.append(val)  #변환한 val값을 tokens 리스트에 추가
+                val = 0 #val 값 으로 초기화
+            valprocessing = False
+            tokens.append(i)    #피연산자를 리스트에 추가했으니 연산차 추가
+
+    if valprocessing:
+        tokens.append(val)  #연산자를 추가했는데 valprocessing이 True일 경우 val값 리스트에 추가
+
+    return tokens   #피연산자와 연산자를 분리한 tokens 리스트 반환
+
+
+def infixToPostfix(arr2): #splitTokens에서 받은 중위표현식 리스트를 후위표현식으로 변환
+    prec = {
+        '*': 3,
+        '/': 3,
+        '+': 2,
+        '-': 2,
+        '(': 1,
+    }
+    # 연산자의 우선순위
+
+    opStack = ArrayStack()
+    result = []
+
+    for i in arr2:
+        if i in prec:   #만약 i가 연산자일 경우에
+            if opStack.isEmpty():   #스택이 비어있다면 i를 추가
+                opStack.push(i)
+            else:
+                if i == '(':    #i가 (일 경우 추가
+                    opStack.push(i)
+                else:
+                    while not opStack.isEmpty():    #스택이 빌때까지 반복
+                        if prec[opStack.peek()] >= prec[i]: #스택의 마지막 원소가 i 보다 우선순위가 클때
+                            result.append(opStack.pop())    #스택에서 추출하여 결과값에 저장
+                        else:
+                            break   #아닌경우 종료 후 스택에 연산자 추가
+
+                    opStack.push(i)
+
+        elif i == ')':  #i가 )일경우
+            while opStack.peek( ) !='(': #스택에서 (가 나올때까지 
+                result.append(opStack.pop())    #스택 원소들을 추출하여 결과값에 저장
+            opStack.pop()   #스택 마지막 원소인 ( 제거
+        else:
+            result.append(i)    #피연산자일 경우 결과값에 추가
+    
+    while not opStack.isEmpty():    #계산 후 스택이 빌때까지 스택의 원소들 결과값에 추가
+        result.append(opStack.pop())
+
+    return result   #중위표현식->후위표현식으로 변환한 result 반환
+
+def postfixEval(tokenList): #후위표현식 계산절차
+    opStack = ArrayStack()
+    for i in tokenList: #만약에 후위표현식의 첫글자가 숫자일경우 스택에 추가 
+        if type(i) == int:
+            opStack.push(i)
+        else:   #숫자가 아닐경우 스택에 들어가있는 값 a,b 를 추출하여 연산자에 의한 계산 후 스택에 추가
+            if i =='+':
+                a = opStack.pop()
+                b = opStack.pop()
+                opStack.push(b+a)
+            elif i == '-':
+                a = opStack.pop()
+                b = opStack.pop()
+                opStack.push(b-a)
+            elif i == '*':
+                a = opStack.pop()
+                b = opStack.pop()
+                opStack.push(b*a)
+            else:
+                a = opStack.pop()
+                b = opStack.pop()
+                opStack.push(b//a)
+
+    if opStack.size() == 1: #연산이 끝난 후 스택의 크기가 1일경우 결과값 반환
+        return opStack.peek()
+
+def solution(expr):
+    tokens = splitTokens(expr)
+    postfix = infixToPostfix(tokens)
+    val = postfixEval(postfix)
+    return val
+
+l = list(input())
+print(solution(l))

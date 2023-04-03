@@ -1,0 +1,68 @@
+class ArrayStack:
+
+    def __init__(self):
+        self.data = []
+
+    def size(self):
+        return len(self.data)
+
+    def isEmpty(self):
+        return self.size() == 0
+
+    def push(self, item):
+        self.data.append(item)
+
+    def pop(self):
+        return self.data.pop()
+
+    def peek(self):
+        return self.data[-1]
+
+prec = {
+    '*': 3, '/': 3,
+    '+': 2, '-': 2,
+    '(': 1
+}
+
+def solution(l):
+    opStack = ArrayStack()
+    expr = []
+    result = []
+    for i in l:
+        expr.append(i)
+        
+    for i in expr:
+        if i in prec:
+            if opStack.isEmpty():
+                opStack.push(i)
+            else:
+                if i == '(':
+                    opStack.push(i)
+                else:
+                    while not opStack.isEmpty():
+                        if prec[opStack.peek()] >= prec[i]:
+                            result.append(opStack.pop())
+                        else:
+                            break
+                    opStack.push(i)
+
+        elif i ==')':
+            while  opStack.peek() != '(':
+                result.append(opStack.pop())
+            opStack.pop()
+        else:
+            result.append(i)
+
+    while not(opStack.isEmpty()):
+        result.append(opStack.pop())
+
+    result = ''.join(result)
+    return result
+
+a = input()
+print(solution(a))
+                # else:
+                #     while prec[opStack.peek()] >= prec[i]:
+                #         result.append(opStack.pop())
+                #         if opStack.isEmpty(): break
+                #     opStack.push(i)
