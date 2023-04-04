@@ -1,0 +1,61 @@
+class Node:
+
+    def __init__(self, key, data):
+        self.key = key
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+    def insert(self, key, data):
+        if key < self.key:  #입력받은 key 값이 현재의 key 값보다 작다면
+            if self.left:   #현재 left에 원소가 있다면
+                self.left.insert(key,data)  #left 원소에 대하여 insert 재귀 실행
+            else:
+                self.left = Node(key,data)  #원소가 없다면(비어있는 공간) 그부분의 노드를 추가
+        elif key > self.key:    #현재 key보다 원소가 클경우
+            if self.right:  #right가 있다면
+                self.right.insert(key,data) #right 원소에 대한 insert 재귀 실행
+            else:
+                self.right = Node(key,data) #원소가 없다면 노드추가
+        else:
+            raise KeyError('key overlap')   #그 외(원소가 중복) 키에러 발생
+        return True #종료 후 True 리턴
+
+    def inorder(self):  #이진탐색트리의 key 나열
+        traversal = []
+        if self.left:
+            traversal += self.left.inorder()
+        traversal.append(self)
+        if self.right:
+            traversal += self.right.inorder()
+        return traversal
+
+
+class BinSearchTree:
+
+    def __init__(self):
+        self.root = None
+
+
+    def insert(self, key, data):
+        if self.root:   #만약 루트가 있는(원소가 있는 트리일 경우)
+                        # node의 insert 메소드 호출
+            self.root.insert(key, data) 
+        else:
+            self.root = Node(key, data)
+            #비어있는 트리일 경우 루트노드 추가
+
+    def inorder(self):
+        if self.root:
+            return self.root.inorder()
+        else:
+            return []
+
+
+def solution(x):
+    return 0
+
+
+
+#이진 탐색트리의 원소 추가
