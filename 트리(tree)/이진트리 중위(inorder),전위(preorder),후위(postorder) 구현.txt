@@ -1,0 +1,68 @@
+class Node:
+
+    def __init__(self, item):
+        self.data = item
+        self.left = None
+        self.right = None
+
+
+    def inorder(self):  #이진트리의 중위순회
+        traversal = []
+        if self.left:
+            traversal += self.left.inorder()
+        traversal.append(self.data)
+        if self.right:
+            traversal += self.right.inorder()
+        return traversal
+
+    def preorder(self): #이진트리의 전위순회
+        traversal = []
+        traversal.append(self.data)
+        if self.left:
+            traversal += self.left.preorder()
+        if self.right:
+            traversal += self.right.preorder()
+        return traversal
+
+
+    def postorder(self):    #이진트리의 후위순회
+        traversal = []
+        if self.left:
+            traversal += self.left.postorder()
+        if self.right:
+            traversal += self.right.postorder()
+        traversal.append(self.data)
+        return traversal
+
+
+class BinaryTree:
+
+    def __init__(self, r):
+        self.root = r
+
+
+    def inorder(self):  #노드가 있을경우 재귀를 통한 중위순회값 리턴
+        if self.root:
+            return self.root.inorder()
+        else:
+            return []
+
+    def preorder(self): #노드가 있을경우 재귀를 통한 전위순회값 리턴
+        if self.root:
+            return self.root.preorder()
+        else:
+            return []
+
+
+    def postorder(self):    #노드가 있을경우 재귀를 통한 후위순회값 리턴
+        if self.root:
+            return self.root.postorder()
+        else:
+            return []
+
+
+def solution(x):
+    return 0
+
+
+# 이진트리의 중위,전위,후위순회 구현
