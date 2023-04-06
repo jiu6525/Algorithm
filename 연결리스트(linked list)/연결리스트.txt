@@ -1,0 +1,132 @@
+#노드 생성
+class Node:
+    def __init__(self, item):
+        self.data = item
+        self.next = None
+
+#연결리스트 관리
+class LinkedList:
+    def __init__(self):
+        self.nodeCount = 0
+        self.head = None
+        self.tail = None
+
+    #연결리스트 시각화
+    def __repr__(self):
+        if self.nodeCount == 0:
+            return 'LinkedList: empty'
+        s = ''
+        curr = self.head
+        while curr is not None:
+            s += repr(curr.data)
+            if curr.next is not None:
+                s += ' -> '
+            curr = curr.next
+        return s
+
+
+    #pos번째의 node를 가리키고 싶을때
+    def getAt(self,pos):
+        if pos <= 0 or pos > self.nodeCount:    #특정경우 예외(빈 연결리스트)
+            return None
+
+        i = 1
+        curr = self.head #연결리스트 첫번째 노드
+
+        #앞에서부터 하나하나 탐색
+        while i <pos:
+            curr = curr.next
+            i += 1
+        return curr
+
+    #리스트를 순회할때
+    def traverse(self):
+        t_list = []
+        curr_node = self.head #첫 노드에 접근
+        while curr_node != None:    #tail이 되면 none이 됨
+            t_list.append(curr_node.data)   #노드가 아니라 item을 넣음
+            curr_node = curr_node.next  #다음 노드에 접근
+        return t_list
+
+    #원소 삽입
+    def insertAt(self, pos, newNode):
+        #pos 예외범위 지정
+        if pos<1 or pos>self.nodeCount+1:
+            return False
+        
+        #리스트 맨 앞 삽입할 때
+        if pos == 1:
+            newNode.next = self.head    #기존 head가 newNode의 next로 밀려남
+            self.head = newNode
+
+        #prev 지정X
+        # else:
+        # prev = self.getAt(pos-1)  # pos 이전의 노드를 prev로 설정
+        # newNode.next = prev.next
+        # prev.next = nextNode
+
+        #prev 지정(pos이전의 노드)
+        else:
+            if pos == self.nodeCount +1:
+                prev = self.tail
+            else:
+                prev = self.getAt(pos-1)
+            newNode.next = prev.next
+            prev.next = newNode
+        
+        #리스트 맨 뒤 삽입 할 때
+        if pos == self.nodeCount + 1:
+            self.tail = newNode
+
+        self.nodeCount += 1
+        return True
+
+    #원소 삭제
+    def popAt(self, pos):
+        if pos < 1 or pos > self.nodeCount:
+            raise IndexError
+
+        curr = self.getAt(pos)  #제거할 node
+        if self.nodeCount == 1 & pos == 1:	# 유일한 리스트
+            self.head = None 
+            self.tail = None
+
+        elif pos == 1:	# 유일하지 않지만 맨 앞 삭제
+            self.head = self.getAt(pos+1) 
+
+        else:
+            prev = self.getAt(pos-1) #아닌경우 prev는 pos-1 순서는 prev(pos-1) -> curr(pos)순
+
+            if self.nodeCount != pos:   #크기와 pos가 같지 않을때
+                prev.next = self.getAt(pos+1)   #prev의 next -> pos+1
+            else:
+                self.tail = prev    #크기가 pos가 같을때(pos = tail) tail = prev
+                prev.next = None    #prev의 next는 tail의 next인 None 값 할당
+        self.nodeCount -= 1
+        return curr.data
+
+    #두 리스트 연결
+    #L = 이어붙일 리스트
+    def concat(self, L):
+        self.tail.next = L.head #원래 리스트의 맨 끝이 이어붙일 리스트의 처음
+
+        #L에 주어진 리스트가 빈 리스트일 때 예외처리
+        if L.tail:
+            self.tail = L.tail  #내 원래 tail을 이어붙인 리스트의 tail로 가게함
+
+        self.nodeCount += L.nodeCount
+
+
+    def getLength(self):
+        return self.nodeCount
+
+a = Node(67)
+b = Node(34)
+c = Node(28)
+l = LinkedList()
+l.insertAt(1,a)
+l.insertAt(2,b)
+l.insertAt(1,c)
+print(l)
+l.popAt(1)
+print(l)
