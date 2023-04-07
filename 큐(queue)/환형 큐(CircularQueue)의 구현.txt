@@ -1,0 +1,52 @@
+class CircularQueue:    #환영큐 구현
+
+    def __init__(self, n):  #n의 크기의 빈 환형큐 생성
+        self.maxCount = n
+        self.data = [None] * n
+        self.count = 0
+        self.front = -1
+        self.rear = -1
+
+
+    def size(self): #환형 큐의 크기 enqueue 메서드가 실행하기 전까지의 크기 0
+        return self.count
+
+    def isEmpty(self):  #환형큐가 비어있을경우 부울값 리턴
+        return self.count == 0
+
+    def isFull(self):   #큐의 카운트가 n값이랑 같을때 True 리턴
+        return self.count == self.maxCount
+
+    def enqueue(self, x):   #환형큐의 원소 삽입
+        if self.isFull():
+            raise IndexError('Queue full')
+        self.rear = (self.rear + 1)%self.maxCount   
+        #rear값 1씩 증가 환형모델이 되기위해 n값인 
+        # maxCount로 나눈 나머지 저장   
+
+        self.data[self.rear] = x
+        self.count += 1
+
+    def dequeue(self):  #환형큐에서의 삭제
+        if self.count == 0:
+
+            raise IndexError('Queue empty')
+        self.front = (self.front + 1)%self.maxCount 
+        #front값 1씩 증가 환형큐에서 rear값과 front 값이 max가 될경우,
+        # 0으로 초기화 되기 때문에 pop연산자는 쓰지않음
+        #front 값을 먼저 증가시키는 이유는 front 값은 다음에 제거될 원소의 인덱스
+        x = self.data[self.front]
+
+        self.count -= 1
+        return x
+
+    def peek(self):
+        if self.isEmpty():
+            raise IndexError('Queue empty')
+        return self.data[(self.front + 1)%self.maxCount]
+        #dequeue 부분과 똑같이 프론트의 값을 리턴해주면 된다
+
+
+def solution(x):
+    return 0
+
