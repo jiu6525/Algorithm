@@ -1,0 +1,9 @@
+# 유클리드 호제법(최대 공약수 구하기)
+def gcd(a,b):
+    if a % b == 0:
+        return b
+    else:
+        return gcd(b,a%b)
+    
+#192와 162의 최대공약수 구하기
+print(gcd(192,162))
