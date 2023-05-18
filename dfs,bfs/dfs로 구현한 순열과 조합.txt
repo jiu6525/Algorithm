@@ -1,0 +1,32 @@
+
+#순열
+def dfs(level):
+    if level == r:
+        print(result)
+        return
+    for i in range(len(n)):
+        if checked[i] == True: continue
+        result[level]= n[i]
+        checked[i] = True
+        dfs(level+1)
+        checked[i] = False
+
+n = [i+1 for i in range(3)]
+r = 2
+result = [0] *r
+checked = [False] * len(n)
+dfs(0)
+
+#조합
+def dfs(level, BeginWith):
+    if level == r:
+        print(result)
+        return
+    for i in range(BeginWith,len(n)):
+        result[level] = n[i]
+        dfs(level+1, i+1)
+
+n = [i for i in range(10)]
+r = 6
+result = [0] * r
+dfs(0,0)
