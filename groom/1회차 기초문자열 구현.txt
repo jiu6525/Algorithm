@@ -1,0 +1,23 @@
+#대소문자 바꾸기
+import sys
+input = sys.stdin.readline
+N = int(input())
+S = input()
+print(S.swapcase())
+
+#단어필터
+n,m = map(int,input().split())
+a = input()
+l = input()
+while a in l:
+    l = l.replace(a,"")
+    
+#큰 수식 찾기
+if l:
+    print(l)
+else:
+    print("EMPTY")
+
+
+a,b = input().split()
+print(max(eval(a),eval(b)))
