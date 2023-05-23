@@ -1,0 +1,30 @@
+#최장 맨해튼 거리
+l = list(map(int,input().split()))
+l.sort(reverse=True)
+print(abs(l[3]-l[0])+abs(l[2]-l[1]))
+
+#8진수 계산기
+n = input()
+l = sum(list(map(int,input().split())))
+print(oct(l)[2:])
+
+#소수찾기
+def ck(n):
+    m = int(n**0.5)
+    l = [True]*n
+    for i in range(2,m+1):
+        for j in range(i+i,n,i):
+            if l[i]:
+                l[j] = False
+
+    return [i for i in range(len(l)) if i>1 and l[i]]
+
+n = int(input())
+l0 = list(map(int,input().split()))
+l1 = ck(n+1)
+r = 0
+for i in l1:
+    r += l0[i-1]
+
+print(r)
+
