@@ -1,0 +1,7 @@
+# 파이썬 사사오입 반올림
+
+def ex(val, digits):    # 소수점 자리수 반올림
+    return round(val+10**(-len(str(val))-1), digits)
+
+def ex1(n):     # 0.5 반올림
+    return int(n)+1 if n-int(n)>=0.5 else int(n)
