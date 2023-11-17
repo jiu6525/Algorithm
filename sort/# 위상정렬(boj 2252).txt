@@ -1,0 +1,27 @@
+import heapq
+
+n, m = map(int, input().split())
+v = [[] for _ in range(n + 1)]
+cnt = [0] * (n + 1)
+result = []
+heap = []
+
+for _ in range(m):
+    a, b = map(int, input().split())
+    v[a].append(b)
+    cnt[b] += 1
+
+for i in range(1, n + 1):
+    if cnt[i] == 0:
+        heapq.heappush(heap, i)
+
+while heap:
+    cur = heapq.heappop(heap)
+    result.append(cur)
+
+    for neighbor in v[cur]:
+        cnt[neighbor] -= 1
+        if cnt[neighbor] == 0:
+            heapq.heappush(heap, neighbor)
+
+print(*result)
